@@ -7,13 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		103B1428284EB982007BA3AB /* test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103B1427284EB982007BA3AB /* test.csv */; };
+		103B142A284EBBC1007BA3AB /* sample.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103B1429284EBBC1007BA3AB /* sample.csv */; };
+		103D074C283D973D00BCF77A /* insulin.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074B283D973D00BCF77A /* insulin.csv */; };
+		103D074E283D98D100BCF77A /* bloodglucose.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074D283D98D100BCF77A /* bloodglucose.csv */; };
+		103D0750283D9A7800BCF77A /* carbs.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074F283D9A7800BCF77A /* carbs.csv */; };
+		104BD50D284ED018001827FD /* 0.077.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 104BD50C284ED018001827FD /* 0.077.mlmodel */; };
 		104FDE4F283332D2003E9868 /* LoopTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE4E283332D2003E9868 /* LoopTunerApp.swift */; };
-		104FDE51283332D2003E9868 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE50283332D2003E9868 /* ContentView.swift */; };
+		104FDE51283332D2003E9868 /* Tuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE50283332D2003E9868 /* Tuner.swift */; };
 		104FDE53283332D5003E9868 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 104FDE52283332D5003E9868 /* Assets.xcassets */; };
 		104FDE56283332D5003E9868 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 104FDE55283332D5003E9868 /* Preview Assets.xcassets */; };
 		104FDE60283332D5003E9868 /* LoopTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE5F283332D5003E9868 /* LoopTunerTests.swift */; };
 		104FDE6A283332D5003E9868 /* LoopTunerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE69283332D5003E9868 /* LoopTunerUITests.swift */; };
 		104FDE6C283332D5003E9868 /* LoopTunerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE6B283332D5003E9868 /* LoopTunerUITestsLaunchTests.swift */; };
+		104FDE7B283332F0003E9868 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 104FDE7A283332F0003E9868 /* HealthKit.framework */; };
+		104FDE7D28333F4A003E9868 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE7C28333F49003E9868 /* HealthKitManager.swift */; };
+		1095DDC7284C28BA00021FAF /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1095DDC6284C28B900021FAF /* NSTimeInterval.swift */; };
+		10E12FC8284D7566009937AF /* MLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E12FC7284D7566009937AF /* MLManager.swift */; };
+		10FD2B7C284B03C7004DCC79 /* ExponentialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +45,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		103B1426284D9B49007BA3AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		103B1427284EB982007BA3AB /* test.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.csv; sourceTree = "<group>"; };
+		103B1429284EBBC1007BA3AB /* sample.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = sample.csv; sourceTree = "<group>"; };
+		103D074B283D973D00BCF77A /* insulin.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = insulin.csv; sourceTree = "<group>"; };
+		103D074D283D98D100BCF77A /* bloodglucose.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = bloodglucose.csv; sourceTree = "<group>"; };
+		103D074F283D9A7800BCF77A /* carbs.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = carbs.csv; sourceTree = "<group>"; };
+		104BD50C284ED018001827FD /* 0.077.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = 0.077.mlmodel; sourceTree = "<group>"; };
 		104FDE4B283332D2003E9868 /* LoopTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoopTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		104FDE4E283332D2003E9868 /* LoopTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopTunerApp.swift; sourceTree = "<group>"; };
-		104FDE50283332D2003E9868 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		104FDE50283332D2003E9868 /* Tuner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tuner.swift; sourceTree = "<group>"; };
 		104FDE52283332D5003E9868 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		104FDE55283332D5003E9868 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		104FDE5B283332D5003E9868 /* LoopTunerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoopTunerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +62,13 @@
 		104FDE65283332D5003E9868 /* LoopTunerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoopTunerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		104FDE69283332D5003E9868 /* LoopTunerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopTunerUITests.swift; sourceTree = "<group>"; };
 		104FDE6B283332D5003E9868 /* LoopTunerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopTunerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		104FDE78283332F0003E9868 /* LoopTuner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LoopTuner.entitlements; sourceTree = "<group>"; };
+		104FDE7A283332F0003E9868 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		104FDE7C28333F49003E9868 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		1095DDC6284C28B900021FAF /* NSTimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
+		10E12FC7284D7566009937AF /* MLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLManager.swift; sourceTree = "<group>"; };
+		10E12FC9284D82FF009937AF /* CreateML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CreateML.framework; path = System/Library/Frameworks/CreateML.framework; sourceTree = SDKROOT; };
+		10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExponentialModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				104FDE7B283332F0003E9868 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +104,7 @@
 				104FDE5E283332D5003E9868 /* LoopTunerTests */,
 				104FDE68283332D5003E9868 /* LoopTunerUITests */,
 				104FDE4C283332D2003E9868 /* Products */,
+				104FDE79283332F0003E9868 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,10 +121,22 @@
 		104FDE4D283332D2003E9868 /* LoopTuner */ = {
 			isa = PBXGroup;
 			children = (
+				103B1426284D9B49007BA3AB /* Info.plist */,
+				104FDE78283332F0003E9868 /* LoopTuner.entitlements */,
 				104FDE4E283332D2003E9868 /* LoopTunerApp.swift */,
-				104FDE50283332D2003E9868 /* ContentView.swift */,
+				104FDE50283332D2003E9868 /* Tuner.swift */,
+				104FDE7C28333F49003E9868 /* HealthKitManager.swift */,
+				10E12FC7284D7566009937AF /* MLManager.swift */,
+				10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */,
+				1095DDC6284C28B900021FAF /* NSTimeInterval.swift */,
 				104FDE52283332D5003E9868 /* Assets.xcassets */,
 				104FDE54283332D5003E9868 /* Preview Content */,
+				103D074B283D973D00BCF77A /* insulin.csv */,
+				103D074D283D98D100BCF77A /* bloodglucose.csv */,
+				103D074F283D9A7800BCF77A /* carbs.csv */,
+				103B1427284EB982007BA3AB /* test.csv */,
+				104BD50C284ED018001827FD /* 0.077.mlmodel */,
+				103B1429284EBBC1007BA3AB /* sample.csv */,
 			);
 			path = LoopTuner;
 			sourceTree = "<group>";
@@ -125,6 +164,15 @@
 				104FDE6B283332D5003E9868 /* LoopTunerUITestsLaunchTests.swift */,
 			);
 			path = LoopTunerUITests;
+			sourceTree = "<group>";
+		};
+		104FDE79283332F0003E9868 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				10E12FC9284D82FF009937AF /* CreateML.framework */,
+				104FDE7A283332F0003E9868 /* HealthKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,8 +279,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				103D0750283D9A7800BCF77A /* carbs.csv in Resources */,
+				103D074E283D98D100BCF77A /* bloodglucose.csv in Resources */,
 				104FDE56283332D5003E9868 /* Preview Assets.xcassets in Resources */,
+				103B1428284EB982007BA3AB /* test.csv in Resources */,
+				103B142A284EBBC1007BA3AB /* sample.csv in Resources */,
 				104FDE53283332D5003E9868 /* Assets.xcassets in Resources */,
+				103D074C283D973D00BCF77A /* insulin.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,8 +310,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				104FDE51283332D2003E9868 /* ContentView.swift in Sources */,
+				10E12FC8284D7566009937AF /* MLManager.swift in Sources */,
+				104BD50D284ED018001827FD /* 0.077.mlmodel in Sources */,
+				104FDE51283332D2003E9868 /* Tuner.swift in Sources */,
+				10FD2B7C284B03C7004DCC79 /* ExponentialModel.swift in Sources */,
 				104FDE4F283332D2003E9868 /* LoopTunerApp.swift in Sources */,
+				1095DDC7284C28BA00021FAF /* NSTimeInterval.swift in Sources */,
+				104FDE7D28333F4A003E9868 /* HealthKitManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,7 +404,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -401,7 +459,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -416,17 +474,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LoopTuner/LoopTuner.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LoopTuner/Preview Content\"";
 				DEVELOPMENT_TEAM = W8T2N36AYW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LoopTuner/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads insulin and carb values from HealthKit";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -445,17 +507,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LoopTuner/LoopTuner.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LoopTuner/Preview Content\"";
 				DEVELOPMENT_TEAM = W8T2N36AYW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LoopTuner/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads insulin and carb values from HealthKit";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

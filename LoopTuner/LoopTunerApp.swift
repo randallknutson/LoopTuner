@@ -11,7 +11,7 @@ import SwiftUI
 struct LoopTunerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Tuner()
         }
     }
 }
