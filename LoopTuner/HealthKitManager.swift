@@ -33,6 +33,7 @@ struct TreatmentInterval {
     var deltabg: Double = 0
     var bg: Double = 0
     var hasCarbs: Bool = false
+    var carbDose: [DietaryCarbohydrates] = []
 }
 
 class HealthKitManager: NSObject {
