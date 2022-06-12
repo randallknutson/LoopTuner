@@ -101,42 +101,49 @@ class HealthKitManager: NSObject {
         return samples
     }
     
-    func getInsulin() async -> Void {
+    func getInsulin() async -> [InsulinDelivery] {
+        var insulins: [InsulinDelivery] = []
         let samples = await queryData(quantityType: .insulinDelivery, numberOfDays: 31)
         let headerString = "units,startDate,insulinType,basal"
         print(headerString)
-        var csvString = "\(headerString)\n"
+//        var csvString = "\(headerString)\n"
         for sample in samples as? [HKQuantitySample] ?? [] {
             let unit = HKUnit(from: "IU")
             let value = sample.quantity.doubleValue(for: unit)
             let startDate = sample.startDate
-            let insulinType = sample.metadata?["com.loopkit.InsulinKit.MetadataKeyInsulinType"] ?? ""
-            let basal = sample.metadata?["com.loopkit.InsulinKit.MetadataKeyScheduledBasalRate"] ?? ""
-            let dataString = "\(value),\(startDate.ISO8601Format()),\(insulinType),\(basal)"
+            let insulinType = (sample.metadata?["com.loopkit.InsulinKit.MetadataKeyInsulinType"] ?? "") as! String
+            let basalRate = Double(((sample.metadata?["com.loopkit.InsulinKit.MetadataKeyScheduledBasalRate"] ?? "") as! String).split(separator: " ").item(at: 0) ?? "")
+            insulins.append(InsulinDelivery(startDate: startDate, units: value, insulinType: insulinType, basalRate: basalRate))
+//            let dataString = "\(value),\(startDate.ISO8601Format()),\(insulinType),\(basal)"
 
-            print("\(dataString)")
-            csvString = csvString.appending("\(dataString)\n")
+//            print("\(dataString)")
+//            csvString = csvString.appending("\(dataString)\n")
         }
+        return insulins
     }
     
-    func getCarbs() async -> Void {
+    func getCarbs() async -> [DietaryCarbohydrates] {
+        var carbs: [DietaryCarbohydrates] = []
         let samples = await queryData(quantityType: .dietaryCarbohydrates, numberOfDays: 31)
         let headerString = "carbs,startDate,absorptionTime"
         print(headerString)
-        var csvString = "\(headerString)\n"
+//        var csvString = "\(headerString)\n"
         for sample in samples as? [HKQuantitySample] ?? [] {
             let unit = HKUnit(from: "g")
             let value = sample.quantity.doubleValue(for: unit)
             let startDate = sample.startDate
-            let absorptionTime = sample.metadata?["com.loopkit.AbsorptionTime"] ?? ""
-            let dataString = "\(value),\(startDate.ISO8601Format()),\(absorptionTime)"
+            let absorptionTime = Int((sample.metadata?["com.loopkit.AbsorptionTime"] ?? "") as! String) ?? 0
+            carbs.append(DietaryCarbohydrates(startDate: startDate, carbs: value, absorptionTime: absorptionTime))
+//            let dataString = "\(value),\(startDate.ISO8601Format()),\(absorptionTime)"
 
-            print("\(dataString)")
-            csvString = csvString.appending("\(dataString)\n")
+//            print("\(dataString)")
+//            csvString = csvString.appending("\(dataString)\n")
         }
+        return carbs
     }
     
-    func getBloodGlucose() async -> Void {
+    func getBloodGlucose() async -> [BloodGlucose] {
+        var bg: [BloodGlucose] = []
         let samples = await queryData(quantityType: .bloodGlucose, numberOfDays: 30)
         let headerString = "bg,startDate"
         print(headerString)
@@ -145,10 +152,103 @@ class HealthKitManager: NSObject {
             let unit = HKUnit(from: "mg/dL")
             let value = sample.quantity.doubleValue(for: unit)
             let startDate = sample.startDate
-            let dataString = "\(value),\(startDate.ISO8601Format())"
+            bg.append(BloodGlucose(startDate: startDate, bg: value))
+//            let dataString = "\(value),\(startDate.ISO8601Format())"
 
-            print("\(dataString)")
-            csvString = csvString.appending("\(dataString)\n")
+//            print("\(dataString)")
+//            csvString = csvString.appending("\(dataString)\n")
         }
+        return bg
+    }
+    
+    func getCSVData(fileName: String) -> Array<String> {
+        guard let filepath = Bundle.main.path(forResource: fileName, ofType: "csv")
+            else {
+                return []
+            }
+        do {
+            let content = try String(contentsOfFile: filepath, encoding: .utf8)
+            let parsedCSV: [String] = content.components(separatedBy: "\n")
+            return parsedCSV
+        }
+        catch {
+            print(error)
+            return []
+        }
+    }
+    
+    func loadBloodGlucoseCSV() -> [BloodGlucose] {
+        var bloodBlucoseArray: [BloodGlucose] = []
+        let csvRows: [String] = getCSVData(fileName: "bloodglucose")
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+
+        for (index, row) in csvRows.enumerated() {
+            if (index != 0) {
+                let columns = row.components(separatedBy: ",")
+                if columns.count == 2 {
+                    let bg = Double(columns[0])
+                    let startDate = dateFormatter.date(from: columns[1])
+                    let csvColumns: BloodGlucose = BloodGlucose.init(startDate: startDate, bg: bg)
+                    bloodBlucoseArray.append(csvColumns)
+                }
+            }
+        }
+        
+        return bloodBlucoseArray
+    }
+    
+    func loadInsulinCSV() -> [InsulinDelivery] {
+        var insulinArray: [InsulinDelivery] = []
+        let csvRows: [String] = getCSVData(fileName: "insulin")
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+
+        for (index, row) in csvRows.enumerated() {
+            if (index != 0) {
+                let columns = row.components(separatedBy: ",")
+                if columns.count == 4 {
+                    let startDate = dateFormatter.date(from: columns[1])
+                    let units = Double(columns[0])
+                    let insulinType = columns[2]
+                    let basalRate = Double(columns[3].split(separator: " ").item(at: 0) ?? "")
+                    let csvColumns: InsulinDelivery = InsulinDelivery.init(startDate: startDate, units: units, insulinType: insulinType, basalRate: basalRate)
+                    insulinArray.append(csvColumns)
+                }
+            }
+        }
+        
+        return insulinArray
+    }
+
+    func loadCarbsCSV() -> [DietaryCarbohydrates] {
+        var carbsArray: [DietaryCarbohydrates] = []
+        let csvRows: [String] = getCSVData(fileName: "carbs")
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+
+        for (index, row) in csvRows.enumerated() {
+            if (index != 0) {
+                let columns = row.components(separatedBy: ",")
+                if columns.count == 3 {
+                    let startDate = dateFormatter.date(from: columns[1])
+                    let carbs = Double(columns[0])
+                    let absorptionTime = Int(columns[2])
+                    let csvColumns: DietaryCarbohydrates = DietaryCarbohydrates.init(startDate: startDate, carbs: carbs, absorptionTime: absorptionTime)
+                    carbsArray.append(csvColumns)
+                }
+            }
+        }
+        
+        return carbsArray
+    }
+}
+
+fileprivate extension Array {
+    func item(at index: Int) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }

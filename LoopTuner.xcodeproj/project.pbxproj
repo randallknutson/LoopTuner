@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		103B1428284EB982007BA3AB /* test.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103B1427284EB982007BA3AB /* test.csv */; };
-		103B142A284EBBC1007BA3AB /* sample.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103B1429284EBBC1007BA3AB /* sample.csv */; };
 		103D074C283D973D00BCF77A /* insulin.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074B283D973D00BCF77A /* insulin.csv */; };
 		103D074E283D98D100BCF77A /* bloodglucose.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074D283D98D100BCF77A /* bloodglucose.csv */; };
 		103D0750283D9A7800BCF77A /* carbs.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074F283D9A7800BCF77A /* carbs.csv */; };
-		104BD50D284ED018001827FD /* 0.077.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 104BD50C284ED018001827FD /* 0.077.mlmodel */; };
 		104FDE4F283332D2003E9868 /* LoopTunerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE4E283332D2003E9868 /* LoopTunerApp.swift */; };
 		104FDE51283332D2003E9868 /* Tuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE50283332D2003E9868 /* Tuner.swift */; };
 		104FDE53283332D5003E9868 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 104FDE52283332D5003E9868 /* Assets.xcassets */; };
@@ -23,7 +20,7 @@
 		104FDE7B283332F0003E9868 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 104FDE7A283332F0003E9868 /* HealthKit.framework */; };
 		104FDE7D28333F4A003E9868 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE7C28333F49003E9868 /* HealthKitManager.swift */; };
 		1095DDC7284C28BA00021FAF /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1095DDC6284C28B900021FAF /* NSTimeInterval.swift */; };
-		10E12FC8284D7566009937AF /* MLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E12FC7284D7566009937AF /* MLManager.swift */; };
+		10E12FC8284D7566009937AF /* Autotuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E12FC7284D7566009937AF /* Autotuner.swift */; };
 		10FD2B7C284B03C7004DCC79 /* ExponentialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,12 +43,9 @@
 
 /* Begin PBXFileReference section */
 		103B1426284D9B49007BA3AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		103B1427284EB982007BA3AB /* test.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.csv; sourceTree = "<group>"; };
-		103B1429284EBBC1007BA3AB /* sample.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = sample.csv; sourceTree = "<group>"; };
 		103D074B283D973D00BCF77A /* insulin.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = insulin.csv; sourceTree = "<group>"; };
 		103D074D283D98D100BCF77A /* bloodglucose.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = bloodglucose.csv; sourceTree = "<group>"; };
 		103D074F283D9A7800BCF77A /* carbs.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = carbs.csv; sourceTree = "<group>"; };
-		104BD50C284ED018001827FD /* 0.077.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = 0.077.mlmodel; sourceTree = "<group>"; };
 		104FDE4B283332D2003E9868 /* LoopTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoopTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		104FDE4E283332D2003E9868 /* LoopTunerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopTunerApp.swift; sourceTree = "<group>"; };
 		104FDE50283332D2003E9868 /* Tuner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tuner.swift; sourceTree = "<group>"; };
@@ -66,7 +60,7 @@
 		104FDE7A283332F0003E9868 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		104FDE7C28333F49003E9868 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		1095DDC6284C28B900021FAF /* NSTimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
-		10E12FC7284D7566009937AF /* MLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLManager.swift; sourceTree = "<group>"; };
+		10E12FC7284D7566009937AF /* Autotuner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autotuner.swift; sourceTree = "<group>"; };
 		10E12FC9284D82FF009937AF /* CreateML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CreateML.framework; path = System/Library/Frameworks/CreateML.framework; sourceTree = SDKROOT; };
 		10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExponentialModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,7 +120,7 @@
 				104FDE4E283332D2003E9868 /* LoopTunerApp.swift */,
 				104FDE50283332D2003E9868 /* Tuner.swift */,
 				104FDE7C28333F49003E9868 /* HealthKitManager.swift */,
-				10E12FC7284D7566009937AF /* MLManager.swift */,
+				10E12FC7284D7566009937AF /* Autotuner.swift */,
 				10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */,
 				1095DDC6284C28B900021FAF /* NSTimeInterval.swift */,
 				104FDE52283332D5003E9868 /* Assets.xcassets */,
@@ -134,9 +128,6 @@
 				103D074B283D973D00BCF77A /* insulin.csv */,
 				103D074D283D98D100BCF77A /* bloodglucose.csv */,
 				103D074F283D9A7800BCF77A /* carbs.csv */,
-				103B1427284EB982007BA3AB /* test.csv */,
-				104BD50C284ED018001827FD /* 0.077.mlmodel */,
-				103B1429284EBBC1007BA3AB /* sample.csv */,
 			);
 			path = LoopTuner;
 			sourceTree = "<group>";
@@ -282,8 +273,6 @@
 				103D0750283D9A7800BCF77A /* carbs.csv in Resources */,
 				103D074E283D98D100BCF77A /* bloodglucose.csv in Resources */,
 				104FDE56283332D5003E9868 /* Preview Assets.xcassets in Resources */,
-				103B1428284EB982007BA3AB /* test.csv in Resources */,
-				103B142A284EBBC1007BA3AB /* sample.csv in Resources */,
 				104FDE53283332D5003E9868 /* Assets.xcassets in Resources */,
 				103D074C283D973D00BCF77A /* insulin.csv in Resources */,
 			);
@@ -310,8 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				10E12FC8284D7566009937AF /* MLManager.swift in Sources */,
-				104BD50D284ED018001827FD /* 0.077.mlmodel in Sources */,
+				10E12FC8284D7566009937AF /* Autotuner.swift in Sources */,
 				104FDE51283332D2003E9868 /* Tuner.swift in Sources */,
 				10FD2B7C284B03C7004DCC79 /* ExponentialModel.swift in Sources */,
 				104FDE4F283332D2003E9868 /* LoopTunerApp.swift in Sources */,
