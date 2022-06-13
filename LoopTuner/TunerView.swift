@@ -60,7 +60,7 @@ struct TunerView: View {
                             Text("Basal")
                                 .font(.largeTitle)
                             Spacer()
-                            Text(String(format: "%.1f", result!.basal))
+                            Text(String(format: "%.2f", result!.basal))
                                 .font(.headline)
                                 .padding()
                                 .border(.primary)
