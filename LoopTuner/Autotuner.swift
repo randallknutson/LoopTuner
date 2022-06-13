@@ -9,6 +9,14 @@ import Foundation
 
 enum TunerError: Error {
     case excessCarbs
+    case invalidData
+}
+
+struct TuneResults {
+    var isf: Double
+    var cr: Double
+    var basal: Double
+    var rmse: Double
 }
 
 class Autotuner: NSObject {
@@ -23,6 +31,7 @@ class Autotuner: NSObject {
     let insulinPeakActivityTime: TimeInterval = .minutes(55)
     let carbsDelay: TimeInterval = .minutes(15)
     let carbsDefaultAbsorptionTime: TimeInterval = .hours(3)
+    let extraCarbTime: TimeInterval = .hours(2)
     
     func getIndex(startDate: TimeInterval, currentDate: TimeInterval) -> Int {
         return Int((currentDate - startDate) / intervalTime)
@@ -101,12 +110,12 @@ class Autotuner: NSObject {
         return averageBasal
     }
     
-    func convertHealthKitToMLDataTable(bloodGlucoses: [BloodGlucose], carbs: [DietaryCarbohydrates], insulinDoses: [InsulinDelivery]) {
+    func tune(bloodGlucoses: [BloodGlucose], carbs: [DietaryCarbohydrates], insulinDoses: [InsulinDelivery]) throws -> TuneResults {
         intervalsPerHour = .hours(1) / intervalTime
 
-        guard let startDate = bloodGlucoses.map({ $0.startDate?.timeIntervalSince1970 ?? Double(MAXINTERP) }).min() else { return }
+        guard let startDate = bloodGlucoses.map({ $0.startDate?.timeIntervalSince1970 ?? Double(MAXINTERP) }).min() else { throw TunerError.invalidData }
         self.startDate = startDate
-        guard let endDate = bloodGlucoses.map ({ $0.startDate?.timeIntervalSince1970 ?? 0}).max() else { return }
+        guard let endDate = bloodGlucoses.map ({ $0.startDate?.timeIntervalSince1970 ?? 0}).max() else { throw TunerError.invalidData }
         self.endDate = endDate
         let intervalCount: Int = Int((endDate - startDate) / intervalTime)
         
@@ -167,8 +176,8 @@ class Autotuner: NSObject {
                 }
             }
         }
-
-        print("ISF=\(bestISF),CR=\(bestCR),Basal=\(bestBasal),RMSE=\(bestRMSE)")
+        
+        return TuneResults(isf: bestISF, cr: bestCR, basal: bestBasal, rmse: bestRMSE)
     }
     
     func calculateExpectedBG(intervals inter: [TreatmentInterval], carbs: [DietaryCarbohydrates], ISF: Double, CR: Double, basal: Double) throws -> Double {
@@ -197,7 +206,7 @@ class Autotuner: NSObject {
                     activeCarbs.append(contentsOf: interval.carbDose)
                 }
                 if (activeCarbs.count > 0) {
-                    let carbsExpire = activeCarbs[0].startDate!.timeIntervalSince1970 + Double(activeCarbs[0].absorptionTime ?? 0) + .hours(2)
+                    let carbsExpire = activeCarbs[0].startDate!.timeIntervalSince1970 + Double(activeCarbs[0].absorptionTime ?? 0) + extraCarbTime
                     if (carbsExpire < interval.date.timeIntervalSince1970) {
                         excessCarbs += activeCarbs[0].carbs ?? 0.0
                         activeCarbs.removeFirst()

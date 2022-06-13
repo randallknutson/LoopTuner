@@ -9,31 +9,24 @@ import SwiftUI
 import HealthKit
 
 struct Tuner: View {
-    let healthKitManager = HealthKitManager();
+    let settings = SettingsStore()
     
-    func getIndex(startDate: TimeInterval, currentDate: TimeInterval) -> Int {
-        return Int(currentDate - startDate) / 300
-    }
-
     var body: some View {
-        VStack {
-            Text("Loop Tuner")
-                .padding()
-            
-            Button(action: {
-                Task {
-                    let bgs = healthKitManager.loadBloodGlucoseCSV()
-                    let carbs = healthKitManager.loadCarbsCSV()
-                    let insulins = healthKitManager.loadInsulinCSV()
-                    
-                    let autotuner = Autotuner()
-                    autotuner.convertHealthKitToMLDataTable(bloodGlucoses: bgs, carbs: carbs, insulinDoses: insulins)
-                    print ("Done")
+        TabView {
+            HomeView()
+                .tabItem {
+                    Label("Home", systemImage: "house")
                 }
-            }) {
-               Text("Calculate")
-            }
+            TunerView()
+                .tabItem {
+                    Label("Tune", systemImage: "wand.and.stars")
+                }
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gearshape")
+                }
         }
+        .environmentObject(settings)
     }
 }
 

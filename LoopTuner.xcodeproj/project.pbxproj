@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10182A9428569C0300875CFE /* TunerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10182A9328569C0300875CFE /* TunerView.swift */; };
+		10182A9628569D8300875CFE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10182A9528569D8300875CFE /* HomeView.swift */; };
 		103D074C283D973D00BCF77A /* insulin.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074B283D973D00BCF77A /* insulin.csv */; };
 		103D074E283D98D100BCF77A /* bloodglucose.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074D283D98D100BCF77A /* bloodglucose.csv */; };
 		103D0750283D9A7800BCF77A /* carbs.csv in Resources */ = {isa = PBXBuildFile; fileRef = 103D074F283D9A7800BCF77A /* carbs.csv */; };
@@ -19,6 +21,8 @@
 		104FDE6C283332D5003E9868 /* LoopTunerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE6B283332D5003E9868 /* LoopTunerUITestsLaunchTests.swift */; };
 		104FDE7B283332F0003E9868 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 104FDE7A283332F0003E9868 /* HealthKit.framework */; };
 		104FDE7D28333F4A003E9868 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104FDE7C28333F49003E9868 /* HealthKitManager.swift */; };
+		1058BB432856919C00CFFB7F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1058BB422856919C00CFFB7F /* SettingsView.swift */; };
+		1058BB452856944A00CFFB7F /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1058BB442856944A00CFFB7F /* SettingsStore.swift */; };
 		1095DDC7284C28BA00021FAF /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1095DDC6284C28B900021FAF /* NSTimeInterval.swift */; };
 		10E12FC8284D7566009937AF /* Autotuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E12FC7284D7566009937AF /* Autotuner.swift */; };
 		10FD2B7C284B03C7004DCC79 /* ExponentialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */; };
@@ -42,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10182A9328569C0300875CFE /* TunerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerView.swift; sourceTree = "<group>"; };
+		10182A9528569D8300875CFE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		103B1426284D9B49007BA3AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		103D074B283D973D00BCF77A /* insulin.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = insulin.csv; sourceTree = "<group>"; };
 		103D074D283D98D100BCF77A /* bloodglucose.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = bloodglucose.csv; sourceTree = "<group>"; };
@@ -59,6 +65,8 @@
 		104FDE78283332F0003E9868 /* LoopTuner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LoopTuner.entitlements; sourceTree = "<group>"; };
 		104FDE7A283332F0003E9868 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		104FDE7C28333F49003E9868 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		1058BB422856919C00CFFB7F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		1058BB442856944A00CFFB7F /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		1095DDC6284C28B900021FAF /* NSTimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
 		10E12FC7284D7566009937AF /* Autotuner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autotuner.swift; sourceTree = "<group>"; };
 		10E12FC9284D82FF009937AF /* CreateML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CreateML.framework; path = System/Library/Frameworks/CreateML.framework; sourceTree = SDKROOT; };
@@ -119,8 +127,12 @@
 				104FDE78283332F0003E9868 /* LoopTuner.entitlements */,
 				104FDE4E283332D2003E9868 /* LoopTunerApp.swift */,
 				104FDE50283332D2003E9868 /* Tuner.swift */,
+				10182A9528569D8300875CFE /* HomeView.swift */,
+				10182A9328569C0300875CFE /* TunerView.swift */,
+				1058BB422856919C00CFFB7F /* SettingsView.swift */,
 				104FDE7C28333F49003E9868 /* HealthKitManager.swift */,
 				10E12FC7284D7566009937AF /* Autotuner.swift */,
+				1058BB442856944A00CFFB7F /* SettingsStore.swift */,
 				10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */,
 				1095DDC6284C28B900021FAF /* NSTimeInterval.swift */,
 				104FDE52283332D5003E9868 /* Assets.xcassets */,
@@ -299,9 +311,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1058BB432856919C00CFFB7F /* SettingsView.swift in Sources */,
 				10E12FC8284D7566009937AF /* Autotuner.swift in Sources */,
+				10182A9428569C0300875CFE /* TunerView.swift in Sources */,
+				10182A9628569D8300875CFE /* HomeView.swift in Sources */,
 				104FDE51283332D2003E9868 /* Tuner.swift in Sources */,
 				10FD2B7C284B03C7004DCC79 /* ExponentialModel.swift in Sources */,
+				1058BB452856944A00CFFB7F /* SettingsStore.swift in Sources */,
 				104FDE4F283332D2003E9868 /* LoopTunerApp.swift in Sources */,
 				1095DDC7284C28BA00021FAF /* NSTimeInterval.swift in Sources */,
 				104FDE7D28333F4A003E9868 /* HealthKitManager.swift in Sources */,

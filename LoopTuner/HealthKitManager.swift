@@ -147,7 +147,7 @@ class HealthKitManager: NSObject {
         let samples = await queryData(quantityType: .bloodGlucose, numberOfDays: 30)
         let headerString = "bg,startDate"
         print(headerString)
-        var csvString = "\(headerString)\n"
+//        var csvString = "\(headerString)\n"
         for sample in samples as? [HKQuantitySample] ?? [] {
             let unit = HKUnit(from: "mg/dL")
             let value = sample.quantity.doubleValue(for: unit)
