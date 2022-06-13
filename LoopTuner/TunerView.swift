@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import HealthKit
 
 struct TunerView: View {
     @EnvironmentObject var settings: SettingsStore
     @State var result: TuneResults?
     @State var days: Int = 30
+    @State var calculating: Bool = false
     let healthKitManager = HealthKitManager()
 
     var body: some View {
@@ -28,21 +30,30 @@ struct TunerView: View {
                     }
 //                }
                 Button(action: {
-                    Task {
+                    result = nil
+                    calculating = true
+                    Task.detached {
 //                        let bgs = healthKitManager.loadBloodGlucoseCSV()
 //                        let carbs = healthKitManager.loadCarbsCSV()
 //                        let insulins = healthKitManager.loadInsulinCSV()
-                        result = nil
-                        let bgs = await healthKitManager.getBloodGlucose(numberOfDays: days)
-                        let carbs = await healthKitManager.getCarbs(numberOfDays: days + 1)
-                        let insulins = await healthKitManager.getInsulin(numberOfDays: days + 1)
-                        
-                        do {
-                            let autotuner = Autotuner(settings)
-                            result = try autotuner.tune(bloodGlucoses: bgs, carbs: carbs, insulinDoses: insulins)
-                        }
-                        catch {
+
+                        if HKHealthStore.isHealthDataAvailable() {
+                            await healthKitManager.requestAuthorization()
+                            let bgs = await healthKitManager.getBloodGlucose(numberOfDays: days)
+                            let carbs = await healthKitManager.getCarbs(numberOfDays: days + 1)
+                            let insulins = await healthKitManager.getInsulin(numberOfDays: days + 1)
                             
+                            do {
+                                let autotuner = await Autotuner(settings)
+                                let result = try autotuner.tune(bloodGlucoses: bgs, carbs: carbs, insulinDoses: insulins)
+                                DispatchQueue.main.async {
+                                    self.result = result
+                                    self.calculating = false
+                                }
+                            }
+                            catch {
+                                
+                            }
                         }
                     }
                 }) {
@@ -51,7 +62,10 @@ struct TunerView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(.green)
                     .controlSize(.large)
-    
+
+                if (calculating) {
+                    ProgressView()
+                }
                 if (result != nil) {
                     Divider()
                     VStack {
