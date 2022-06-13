@@ -30,7 +30,7 @@ final class SettingsStore: ObservableObject {
         defaults.register(defaults: [
             Keys.insulinDelay: TimeInterval.minutes(10),
             Keys.insulinActionDuration: TimeInterval.hours(6),
-            Keys.insulinPeakActivityTime: TimeInterval.minutes(55),
+            Keys.insulinPeakActivityTime: TimeInterval.minutes(65),
             Keys.carbsDelay: TimeInterval.minutes(15),
             Keys.carbsDefaultAbsorptionTime: TimeInterval.hours(3),
             Keys.carbsExtraAbsortionTime: TimeInterval.hours(2),

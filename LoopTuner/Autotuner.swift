@@ -20,18 +20,17 @@ struct TuneResults {
 }
 
 class Autotuner: NSObject {
+    var settings: SettingsStore
     var intervals: [TreatmentInterval] = []
     var startDate: TimeInterval = 0
     var endDate: TimeInterval = 0
     var intervalsPerHour: Double = 0.0
 
     let intervalTime: TimeInterval = .minutes(5)
-    let insulinDelay: TimeInterval = .minutes(10)
-    let insulinActionDuration: TimeInterval = .minutes(360)
-    let insulinPeakActivityTime: TimeInterval = .minutes(55)
-    let carbsDelay: TimeInterval = .minutes(15)
-    let carbsDefaultAbsorptionTime: TimeInterval = .hours(3)
-    let extraCarbTime: TimeInterval = .hours(2)
+    
+    init(_ settings: SettingsStore) {
+        self.settings = settings
+    }
     
     func getIndex(startDate: TimeInterval, currentDate: TimeInterval) -> Int {
         return Int((currentDate - startDate) / intervalTime)
@@ -49,7 +48,7 @@ class Autotuner: NSObject {
     }
     
     func fillInsulin(insulinDoses: [InsulinDelivery]) {
-        let insulinModel = ExponentialModel(actionDuration: insulinActionDuration, peakActivityTime: insulinPeakActivityTime, delay: insulinDelay)
+        let insulinModel = ExponentialModel(actionDuration: settings.insulinActionDuration, peakActivityTime: settings.insulinPeakActivityTime, delay: settings.insulinDelay)
         for insulinDose in insulinDoses {
             guard let currentDate = insulinDose.startDate else { continue }
             let units = insulinDose.units ?? 0
@@ -57,7 +56,7 @@ class Autotuner: NSObject {
             // TODO: This only works for 5 minute intervals. For longer intervals we need to check each 5 minute interval to see how much basal was delivered.
             let totalDose = units + basalRate / intervalsPerHour
             let index = getIndex(startDate: startDate, currentDate: currentDate.timeIntervalSince1970)
-            let durationIntervalsCount = Int(insulinActionDuration / intervalTime)
+            let durationIntervalsCount = Int(settings.insulinActionDuration / intervalTime)
             for i in 0..<durationIntervalsCount {
                 let offsetIndex = index + i
                 if (offsetIndex > 0 && offsetIndex < intervals.count) {
@@ -71,7 +70,7 @@ class Autotuner: NSObject {
     func marCarbs(carbs: [DietaryCarbohydrates]) {
         for carb in carbs {
             guard let currentDate = carb.startDate else { continue }
-            let actionDuration: TimeInterval = TimeInterval(carb.absorptionTime ?? Int(carbsDefaultAbsorptionTime)) + carbsDelay
+            let actionDuration: TimeInterval = TimeInterval(carb.absorptionTime ?? Int(settings.carbsDefaultAbsorptionTime)) + settings.carbsDelay
             let index = getIndex(startDate: startDate, currentDate: currentDate.timeIntervalSince1970)
             let durationIntervalsCount = Int(actionDuration / intervalTime)
             for i in 0..<durationIntervalsCount {
@@ -131,7 +130,7 @@ class Autotuner: NSObject {
         marCarbs(carbs: carbs)
 
         let averageBasal = calcAverageBasal()
-        print("Basal: \(averageBasal)")
+//        print("Basal: \(averageBasal)")
 
         // Try various combinations of ISF and CRs to find the best fit.
         var possibleISFs = Array(stride(from: 60.0, to: 190.0, by: 10.0))
@@ -206,7 +205,7 @@ class Autotuner: NSObject {
                     activeCarbs.append(contentsOf: interval.carbDose)
                 }
                 if (activeCarbs.count > 0) {
-                    let carbsExpire = activeCarbs[0].startDate!.timeIntervalSince1970 + Double(activeCarbs[0].absorptionTime ?? 0) + extraCarbTime
+                    let carbsExpire = activeCarbs[0].startDate!.timeIntervalSince1970 + Double(activeCarbs[0].absorptionTime ?? 0) + settings.carbsExtraAbsortionTime
                     if (carbsExpire < interval.date.timeIntervalSince1970) {
                         excessCarbs += activeCarbs[0].carbs ?? 0.0
                         activeCarbs.removeFirst()

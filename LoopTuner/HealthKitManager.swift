@@ -101,18 +101,18 @@ class HealthKitManager: NSObject {
         return samples
     }
     
-    func getInsulin() async -> [InsulinDelivery] {
+    func getInsulin(numberOfDays days: Int) async -> [InsulinDelivery] {
         var insulins: [InsulinDelivery] = []
-        let samples = await queryData(quantityType: .insulinDelivery, numberOfDays: 31)
-        let headerString = "units,startDate,insulinType,basal"
-        print(headerString)
+        let samples = await queryData(quantityType: .insulinDelivery, numberOfDays: days)
+//        let headerString = "units,startDate,insulinType,basal"
+//        print(headerString)
 //        var csvString = "\(headerString)\n"
         for sample in samples as? [HKQuantitySample] ?? [] {
             let unit = HKUnit(from: "IU")
             let value = sample.quantity.doubleValue(for: unit)
             let startDate = sample.startDate
             let insulinType = (sample.metadata?["com.loopkit.InsulinKit.MetadataKeyInsulinType"] ?? "") as! String
-            let basalRate = Double(((sample.metadata?["com.loopkit.InsulinKit.MetadataKeyScheduledBasalRate"] ?? "") as! String).split(separator: " ").item(at: 0) ?? "")
+            let basalRate = Double((sample.metadata?["com.loopkit.InsulinKit.MetadataKeyScheduledBasalRate"] as? String ?? "").split(separator: " ").item(at: 0) ?? "")
             insulins.append(InsulinDelivery(startDate: startDate, units: value, insulinType: insulinType, basalRate: basalRate))
 //            let dataString = "\(value),\(startDate.ISO8601Format()),\(insulinType),\(basal)"
 
@@ -122,17 +122,17 @@ class HealthKitManager: NSObject {
         return insulins
     }
     
-    func getCarbs() async -> [DietaryCarbohydrates] {
+    func getCarbs(numberOfDays days: Int) async -> [DietaryCarbohydrates] {
         var carbs: [DietaryCarbohydrates] = []
-        let samples = await queryData(quantityType: .dietaryCarbohydrates, numberOfDays: 31)
-        let headerString = "carbs,startDate,absorptionTime"
-        print(headerString)
+        let samples = await queryData(quantityType: .dietaryCarbohydrates, numberOfDays: days)
+//        let headerString = "carbs,startDate,absorptionTime"
+//        print(headerString)
 //        var csvString = "\(headerString)\n"
         for sample in samples as? [HKQuantitySample] ?? [] {
             let unit = HKUnit(from: "g")
             let value = sample.quantity.doubleValue(for: unit)
             let startDate = sample.startDate
-            let absorptionTime = Int((sample.metadata?["com.loopkit.AbsorptionTime"] ?? "") as! String) ?? 0
+            let absorptionTime = sample.metadata?["com.loopkit.AbsorptionTime"] as? Int ?? 0
             carbs.append(DietaryCarbohydrates(startDate: startDate, carbs: value, absorptionTime: absorptionTime))
 //            let dataString = "\(value),\(startDate.ISO8601Format()),\(absorptionTime)"
 
@@ -142,11 +142,11 @@ class HealthKitManager: NSObject {
         return carbs
     }
     
-    func getBloodGlucose() async -> [BloodGlucose] {
+    func getBloodGlucose(numberOfDays days: Int) async -> [BloodGlucose] {
         var bg: [BloodGlucose] = []
-        let samples = await queryData(quantityType: .bloodGlucose, numberOfDays: 30)
-        let headerString = "bg,startDate"
-        print(headerString)
+        let samples = await queryData(quantityType: .bloodGlucose, numberOfDays: days)
+//        let headerString = "bg,startDate"
+//        print(headerString)
 //        var csvString = "\(headerString)\n"
         for sample in samples as? [HKQuantitySample] ?? [] {
             let unit = HKUnit(from: "mg/dL")

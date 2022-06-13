@@ -8,20 +8,37 @@
 import SwiftUI
 
 struct TunerView: View {
-    let healthKitManager = HealthKitManager()
+    @EnvironmentObject var settings: SettingsStore
     @State var result: TuneResults?
+    @State var days: Int = 30
+    let healthKitManager = HealthKitManager()
 
     var body: some View {
         NavigationView {
             VStack {
+//                Form {
+                    let dayOptions: [Int] = [15, 30, 60, 90]
+                    Picker(
+                        selection: $days,
+                        label: Text("Treatment History")
+                    ) {
+                        ForEach(values: dayOptions) { value in
+                            Text("\(Int(value)) days").tag(value)
+                        }
+                    }
+//                }
                 Button(action: {
                     Task {
-                        let bgs = healthKitManager.loadBloodGlucoseCSV()
-                        let carbs = healthKitManager.loadCarbsCSV()
-                        let insulins = healthKitManager.loadInsulinCSV()
+//                        let bgs = healthKitManager.loadBloodGlucoseCSV()
+//                        let carbs = healthKitManager.loadCarbsCSV()
+//                        let insulins = healthKitManager.loadInsulinCSV()
+                        result = nil
+                        let bgs = await healthKitManager.getBloodGlucose(numberOfDays: days)
+                        let carbs = await healthKitManager.getCarbs(numberOfDays: days + 1)
+                        let insulins = await healthKitManager.getInsulin(numberOfDays: days + 1)
                         
                         do {
-                            let autotuner = Autotuner()
+                            let autotuner = Autotuner(settings)
                             result = try autotuner.tune(bloodGlucoses: bgs, carbs: carbs, insulinDoses: insulins)
                         }
                         catch {
@@ -60,7 +77,7 @@ struct TunerView: View {
                             Text("Basal")
                                 .font(.largeTitle)
                             Spacer()
-                            Text(String(format: "%.2f", result!.basal))
+                            Text(String(format: "%.2f", Double(Int(result!.basal * 20.0))/20.0))
                                 .font(.headline)
                                 .padding()
                                 .border(.primary)

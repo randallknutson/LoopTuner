@@ -85,6 +85,8 @@ struct SettingsView: View {
                         }
                     }
                 }
+                Text("Not all carbs are absorbed within the entered absorption time. \"Extra absorption time\" adds some additional time to allow using those carbs.")
+                Text("\"Allowed error percent\" only allows a certain amount of carbs to cary past the extra absorption time.")
             }
             .navigationTitle("Settings")
         }
