@@ -31,15 +31,15 @@ struct TunerView: View {
                     result = []
                     calculating = true
                     Task.detached {
-                        let bgs = healthKitManager.loadBloodGlucoseCSV()
-                        let carbs = healthKitManager.loadCarbsCSV()
-                        let insulins = healthKitManager.loadInsulinCSV()
+//                        let bgs = healthKitManager.loadBloodGlucoseCSV()
+//                        let carbs = healthKitManager.loadCarbsCSV()
+//                        let insulins = healthKitManager.loadInsulinCSV()
 
-//                        if HKHealthStore.isHealthDataAvailable() {
-//                            await healthKitManager.requestAuthorization()
-//                            let bgs = await healthKitManager.getBloodGlucose(numberOfDays: days)
-//                            let carbs = await healthKitManager.getCarbs(numberOfDays: days + 1)
-//                            let insulins = await healthKitManager.getInsulin(numberOfDays: days + 1)
+                        if HKHealthStore.isHealthDataAvailable() {
+                            await healthKitManager.requestAuthorization()
+                            let bgs = await healthKitManager.getBloodGlucose(numberOfDays: days)
+                            let carbs = await healthKitManager.getCarbs(numberOfDays: days + 1)
+                            let insulins = await healthKitManager.getInsulin(numberOfDays: days + 1)
                             
                             do {
                                 let autotuner = await Autotuner(settings)
@@ -52,7 +52,7 @@ struct TunerView: View {
                             catch {
                                 
                             }
-//                        }
+                        }
                     }
                 }) {
                    Text("Calculate")
