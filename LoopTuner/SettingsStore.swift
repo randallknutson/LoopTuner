@@ -10,6 +10,7 @@ import Combine
 
 final class SettingsStore: ObservableObject {
     private enum Keys {
+        static let hourly = "hourly"
         static let insulinDelay = "insulinDelay"
         static let insulinActionDuration = "insulinActionDuration"
         static let insulinPeakActivityTime = "insulinPeakActivityTime"
@@ -28,6 +29,7 @@ final class SettingsStore: ObservableObject {
         self.defaults = defaults
 
         defaults.register(defaults: [
+            Keys.hourly: false,
             Keys.insulinDelay: TimeInterval.minutes(10),
             Keys.insulinActionDuration: TimeInterval.hours(6),
             Keys.insulinPeakActivityTime: TimeInterval.minutes(65),
@@ -41,6 +43,11 @@ final class SettingsStore: ObservableObject {
             .publisher(for: UserDefaults.didChangeNotification)
             .map { _ in () }
             .subscribe(objectWillChange)
+    }
+
+    var hourly: Bool {
+        set { defaults.set(newValue, forKey: Keys.hourly) }
+        get { defaults.bool(forKey: Keys.hourly) }
     }
 
     var insulinDelay: TimeInterval {

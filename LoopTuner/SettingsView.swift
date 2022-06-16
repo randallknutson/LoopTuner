@@ -13,6 +13,9 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
+                Toggle(isOn: $settings.hourly) {
+                    Text("Hourly Results")
+                }
                 Section(header: Text("Insulin Settings")) {
                     let insulinDelays: [Double] = [5, 10, 15, 20, 25, 30]
                     Picker(

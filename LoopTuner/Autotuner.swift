@@ -12,11 +12,28 @@ enum TunerError: Error {
     case invalidData
 }
 
-struct TuneResults {
+struct TuneResults: Identifiable {
+    var period: String = "Daily"
     var isf: Double
     var cr: Double
     var basal: Double
     var rmse: Double
+    let id = UUID()
+}
+
+extension TuneResults {
+    var isfString: String {
+        String(format: "%.1f", isf)
+    }
+    var crString: String {
+        String(format: "%.1f", cr)
+    }
+    var basalString: String {
+        String(format: "%.2f", Double(Int(basal * 20.0))/20.0)
+    }
+    var rmseString: String {
+        String(format: "%.1f", rmse)
+    }
 }
 
 class Autotuner: NSObject {
@@ -34,6 +51,10 @@ class Autotuner: NSObject {
     
     func getIndex(startDate: TimeInterval, currentDate: TimeInterval) -> Int {
         return Int((currentDate - startDate) / intervalTime)
+    }
+    
+    func getHour(date: Date) -> Int {
+        return Calendar.current.component(.hour, from: date)
     }
     
     func fillBG(bloodGlucoses: [BloodGlucose]) {
@@ -67,7 +88,7 @@ class Autotuner: NSObject {
         }
     }
 
-    func marCarbs(carbs: [DietaryCarbohydrates]) {
+    func markCarbs(carbs: [DietaryCarbohydrates]) {
         for carb in carbs {
             guard let currentDate = carb.startDate else { continue }
             let actionDuration: TimeInterval = TimeInterval(carb.absorptionTime ?? Int(settings.carbsDefaultAbsorptionTime)) + settings.carbsDelay
@@ -82,13 +103,19 @@ class Autotuner: NSObject {
         }
     }
     
-    func calcAverageBasal() -> Double {
+    func calcAverageBasal(hour: Int? = nil) -> Double {
         // Calculate average basal rate where zero COB and zero delta BG for several intervals.
         var zeroInsulins: [Double] = []
         let continuityCount = 5
         let tolerance = 3.0
         for (index, interval) in intervals.enumerated() {
-            if (interval.bg != 0 && intervals.indices.contains(index + continuityCount + 1) && interval.bg < 140 && interval.bg > 80) {
+            if (
+                interval.bg != 0 &&
+                intervals.indices.contains(index + continuityCount + 1) &&
+                interval.bg < 140 &&
+                interval.bg > 80 &&
+                (hour == nil || hour == getHour(date: interval.date))
+            ) {
                 var isContinuous = true
                 if (interval.hasCarbs) {
                     continue
@@ -109,7 +136,9 @@ class Autotuner: NSObject {
         return averageBasal
     }
     
-    func tune(bloodGlucoses: [BloodGlucose], carbs: [DietaryCarbohydrates], insulinDoses: [InsulinDelivery]) throws -> TuneResults {
+    func tune(bloodGlucoses: [BloodGlucose], carbs: [DietaryCarbohydrates], insulinDoses: [InsulinDelivery]) throws -> [TuneResults] {
+        var overallResults = TuneResults(isf: 0.0, cr: 0.0, basal: 0.0, rmse: 100.0)
+        var hourlyResults: [TuneResults] = []
         intervalsPerHour = .hours(1) / intervalTime
 
         guard let startDate = bloodGlucoses.map({ $0.startDate?.timeIntervalSince1970 ?? Double(MAXINTERP) }).min() else { throw TunerError.invalidData }
@@ -123,51 +152,75 @@ class Autotuner: NSObject {
             intervals.append(TreatmentInterval(date: Date(timeIntervalSince1970: startDate + Double(i) * intervalTime)))
         }
         
+        if (settings.hourly) {
+            for i in 0...23 {
+                hourlyResults.append(TuneResults(period: String(i), isf: 0.0, cr: 0.0, basal: 0.0, rmse: 100.0))
+            }
+        }
+        
         fillBG(bloodGlucoses: bloodGlucoses)
 
         fillInsulin(insulinDoses: insulinDoses)
 
-        marCarbs(carbs: carbs)
+        markCarbs(carbs: carbs)
 
-        let averageBasal = calcAverageBasal()
+        let overallBasal = calcAverageBasal()
 //        print("Basal: \(averageBasal)")
+        
+        for hour in 0..<hourlyResults.count {
+            hourlyResults[hour].basal = calcAverageBasal(hour: hour)
+        }
+
+        for hour in 0..<hourlyResults.count {
+            if (hourlyResults[hour].basal == 0.0) {
+                if (hour > 0) {
+                    hourlyResults[hour].basal = hourlyResults[hour - 1].basal
+                }
+                else {
+                    hourlyResults[hour].basal = overallBasal
+                }
+            }
+        }
 
         // Try various combinations of ISF and CRs to find the best fit.
         var possibleISFs = Array(stride(from: 60.0, to: 190.0, by: 10.0))
         var possibleCRs = Array(stride(from: 9.0, to: 12.0, by: 1.0))
         let sortedCarbs = carbs.sorted(by: { $0.startDate! < $1.startDate! })
-        var bestRMSE = 50.0
-        var bestISF = 0.0
-        var bestCR = 0.0
-        var bestBasal = 0.0
         for possibleISF in possibleISFs {
             for possibleCR in possibleCRs {
                 do {
-                    let rmse = try calculateExpectedBG(intervals: intervals, carbs: sortedCarbs, ISF: possibleISF, CR: possibleCR, basal: averageBasal/intervalsPerHour)
-                    if (rmse < bestRMSE) {
-                        bestISF = possibleISF
-                        bestCR = possibleCR
-                        bestBasal = averageBasal
-                        bestRMSE = rmse
+                    let rmse = try calculateExpectedBG(intervals: intervals, carbs: sortedCarbs, potentialResults: TuneResults(isf: possibleISF, cr: possibleCR, basal: overallBasal, rmse: 100.0))
+                    if (rmse < overallResults.rmse) {
+                        overallResults = TuneResults(isf: possibleISF, cr: possibleCR, basal: overallBasal, rmse: rmse)
                     }
                 }
                 catch {
 //                    print("\(possibleISF),\(possibleCR),\(error)")
                 }
+                for hour in 0..<hourlyResults.count {
+                    do {
+                        let hourlyRmse = try calculateExpectedBG(intervals: intervals, carbs: sortedCarbs, potentialResults: TuneResults(isf: possibleISF, cr: possibleCR, basal: hourlyResults[hour].basal, rmse: 100.0), hour: hour)
+                        if (hourlyRmse < hourlyResults[hour].rmse) {
+                            hourlyResults[hour].isf = possibleISF
+                            hourlyResults[hour].cr = possibleCR
+                            hourlyResults[hour].rmse = hourlyRmse
+                        }
+                    }
+                    catch {
+                        
+                    }
+                }
             }
         }
 
-        possibleISFs = Array(stride(from: (bestISF - 10.0), to: (bestISF + 10.0), by: 1.0))
-        possibleCRs = Array(stride(from: (bestCR - 1.0), to: (bestCR + 1.0), by: 0.1))
+        possibleISFs = Array(stride(from: (overallResults.isf - 10.0), to: (overallResults.isf + 10.0), by: 1.0))
+        possibleCRs = Array(stride(from: (overallResults.cr - 1.0), to: (overallResults.cr + 1.0), by: 0.1))
         for possibleISF in possibleISFs {
             for possibleCR in possibleCRs {
                 do {
-                    let rmse = try calculateExpectedBG(intervals: intervals, carbs: sortedCarbs, ISF: possibleISF, CR: possibleCR, basal: averageBasal/intervalsPerHour)
-                    if (rmse < bestRMSE) {
-                        bestISF = possibleISF
-                        bestCR = possibleCR
-                        bestBasal = averageBasal
-                        bestRMSE = rmse
+                    let rmse = try calculateExpectedBG(intervals: intervals, carbs: sortedCarbs, potentialResults: TuneResults(isf: possibleISF, cr: possibleCR, basal: overallBasal, rmse: 100.0))
+                    if (rmse < overallResults.rmse) {
+                        overallResults = TuneResults(isf: possibleISF, cr: possibleCR, basal: overallBasal, rmse: rmse)
                     }
                 }
                 catch {
@@ -176,14 +229,36 @@ class Autotuner: NSObject {
             }
         }
         
-        return TuneResults(isf: bestISF, cr: bestCR, basal: bestBasal, rmse: bestRMSE)
+//        for hour in 0..<hourlyResults.count {
+//            possibleISFs = Array(stride(from: (hourlyResults[hour].isf - 10.0), to: (hourlyResults[hour].isf + 10.0), by: 1.0))
+//            possibleCRs = Array(stride(from: (hourlyResults[hour].cr - 1.0), to: (hourlyResults[hour].cr + 1.0), by: 0.1))
+//            for possibleISF in possibleISFs {
+//                for possibleCR in possibleCRs {
+//                    do {
+//                        let rmse = try calculateExpectedBG(intervals: intervals, carbs: sortedCarbs, potentialResults: TuneResults(isf: possibleISF, cr: possibleCR, basal: hourlyResults[hour].basal, rmse: 100.0))
+//                        if (rmse < hourlyResults[hour].rmse) {
+//                            hourlyResults[hour] = TuneResults(period: hourlyResults[hour].period, isf: possibleISF, cr: possibleCR, basal: hourlyResults[hour].basal, rmse: rmse)
+//                        }
+//                    }
+//                    catch {
+//    //                    print("\(possibleISF),\(possibleCR),\(error)")
+//                    }
+//                }
+//            }
+//        }
+
+        var results = [overallResults]
+        results.append(contentsOf: hourlyResults)
+        
+        return results
     }
     
-    func calculateExpectedBG(intervals inter: [TreatmentInterval], carbs: [DietaryCarbohydrates], ISF: Double, CR: Double, basal: Double) throws -> Double {
+    func calculateExpectedBG(intervals inter: [TreatmentInterval], carbs: [DietaryCarbohydrates], potentialResults: TuneResults, hour: Int? = nil) throws -> Double {
         var errors: [Double] = []
         var intervals = inter
         let startDate = intervals[0].date.timeIntervalSince1970
         var totalCarbs = 0.0
+        let basal = potentialResults.basal / intervalsPerHour
 
         // Assign carb entries to intervals so we know when to find them.
         for carb in carbs {
@@ -214,8 +289,8 @@ class Autotuner: NSObject {
                 let deltabg = intervals[index + 1].bg - interval.bg
                 let bolus = (interval.insulin - basal)
                 if (bolus > 0) {
-                    let carbDeltaBG = deltabg + bolus * ISF
-                    var extraCarbs = carbDeltaBG / CR
+                    let carbDeltaBG = deltabg + bolus * potentialResults.isf
+                    var extraCarbs = carbDeltaBG / potentialResults.cr
                     while extraCarbs > 0 && activeCarbs.count > 0 {
                         if (extraCarbs < activeCarbs[0].carbs ?? 0) {
                             carbs += extraCarbs
@@ -229,8 +304,10 @@ class Autotuner: NSObject {
                         }
                     }
                 }
-                let expectedDeltaBG = carbs * CR - bolus * ISF
-                errors.append(pow(deltabg - expectedDeltaBG, 2))
+                let expectedDeltaBG = carbs * potentialResults.cr - bolus * potentialResults.isf
+                if (hour == nil || hour == getHour(date: interval.date)) {
+                    errors.append(pow(deltabg - expectedDeltaBG, 2))
+                }
             }
         }
         if (excessCarbs / totalCarbs > 0.02) {

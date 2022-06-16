@@ -10,7 +10,7 @@ import HealthKit
 
 struct TunerView: View {
     @EnvironmentObject var settings: SettingsStore
-    @State var result: TuneResults?
+    @State var result: [TuneResults] = []
     @State var days: Int = 30
     @State var calculating: Bool = false
     let healthKitManager = HealthKitManager()
@@ -18,7 +18,6 @@ struct TunerView: View {
     var body: some View {
         NavigationView {
             VStack {
-//                Form {
                     let dayOptions: [Int] = [15, 30, 60, 90]
                     Picker(
                         selection: $days,
@@ -28,20 +27,19 @@ struct TunerView: View {
                             Text("\(Int(value)) days").tag(value)
                         }
                     }
-//                }
                 Button(action: {
-                    result = nil
+                    result = []
                     calculating = true
                     Task.detached {
-//                        let bgs = healthKitManager.loadBloodGlucoseCSV()
-//                        let carbs = healthKitManager.loadCarbsCSV()
-//                        let insulins = healthKitManager.loadInsulinCSV()
+                        let bgs = healthKitManager.loadBloodGlucoseCSV()
+                        let carbs = healthKitManager.loadCarbsCSV()
+                        let insulins = healthKitManager.loadInsulinCSV()
 
-                        if HKHealthStore.isHealthDataAvailable() {
-                            await healthKitManager.requestAuthorization()
-                            let bgs = await healthKitManager.getBloodGlucose(numberOfDays: days)
-                            let carbs = await healthKitManager.getCarbs(numberOfDays: days + 1)
-                            let insulins = await healthKitManager.getInsulin(numberOfDays: days + 1)
+//                        if HKHealthStore.isHealthDataAvailable() {
+//                            await healthKitManager.requestAuthorization()
+//                            let bgs = await healthKitManager.getBloodGlucose(numberOfDays: days)
+//                            let carbs = await healthKitManager.getCarbs(numberOfDays: days + 1)
+//                            let insulins = await healthKitManager.getInsulin(numberOfDays: days + 1)
                             
                             do {
                                 let autotuner = await Autotuner(settings)
@@ -54,7 +52,7 @@ struct TunerView: View {
                             catch {
                                 
                             }
-                        }
+//                        }
                     }
                 }) {
                    Text("Calculate")
@@ -62,51 +60,42 @@ struct TunerView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(.green)
                     .controlSize(.large)
+                    .disabled(calculating)
 
                 if (calculating) {
                     ProgressView()
                 }
-                if (result != nil) {
+                if (result.count != 0) {
                     Divider()
                     VStack {
                         HStack {
+                            Text("Period")
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             Text("ISF")
-                                .font(.largeTitle)
-                            Spacer()
-                            Text(String(format: "%.1f", result!.isf))
-                                .font(.headline)
-                                .padding()
-                                .border(.primary)
-                        }
-                        HStack {
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             Text("CR")
-                                .font(.largeTitle)
-                            Spacer()
-                            Text(String(format: "%.1f", result!.cr))
-                                .font(.headline)
-                                .padding()
-                                .border(.primary)
-                        }
-                        HStack {
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             Text("Basal")
-                                .font(.largeTitle)
-                            Spacer()
-                            Text(String(format: "%.2f", Double(Int(result!.basal * 20.0))/20.0))
-                                .font(.headline)
-                                .padding()
-                                .border(.primary)
-                        }
-                        HStack {
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             Text("Error %")
-                                .font(.largeTitle)
-                            Spacer()
-                            Text(String(format: "%.1f", result!.rmse))
-                                .font(.headline)
-                                .padding()
-                                .border(.primary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        ForEach(result) { tuned in
+                            HStack {
+                                Text(tuned.period)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text(tuned.isfString)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text(tuned.crString)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text(tuned.basalString)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text(tuned.rmseString)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                     }
-                        .padding()
+                    .padding()
                 }
                 Spacer()
             }
