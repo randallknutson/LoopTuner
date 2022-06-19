@@ -24,6 +24,9 @@
 		1058BB432856919C00CFFB7F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1058BB422856919C00CFFB7F /* SettingsView.swift */; };
 		1058BB452856944A00CFFB7F /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1058BB442856944A00CFFB7F /* SettingsStore.swift */; };
 		1095DDC7284C28BA00021FAF /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1095DDC6284C28B900021FAF /* NSTimeInterval.swift */; };
+		109D07AA285FE88C008434CA /* AppCenterAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 109D07A9285FE88C008434CA /* AppCenterAnalytics */; };
+		109D07AC285FE88C008434CA /* AppCenterCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = 109D07AB285FE88C008434CA /* AppCenterCrashes */; };
+		109D07AE285FE88C008434CA /* AppCenterDistribute in Frameworks */ = {isa = PBXBuildFile; productRef = 109D07AD285FE88C008434CA /* AppCenterDistribute */; };
 		10E12FC8284D7566009937AF /* Autotuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E12FC7284D7566009937AF /* Autotuner.swift */; };
 		10FD2B7C284B03C7004DCC79 /* ExponentialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FD2B7B284B03C7004DCC79 /* ExponentialModel.swift */; };
 /* End PBXBuildFile section */
@@ -78,6 +81,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				109D07AE285FE88C008434CA /* AppCenterDistribute in Frameworks */,
+				109D07AA285FE88C008434CA /* AppCenterAnalytics in Frameworks */,
+				109D07AC285FE88C008434CA /* AppCenterCrashes in Frameworks */,
 				104FDE7B283332F0003E9868 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -194,6 +200,11 @@
 			dependencies = (
 			);
 			name = LoopTuner;
+			packageProductDependencies = (
+				109D07A9285FE88C008434CA /* AppCenterAnalytics */,
+				109D07AB285FE88C008434CA /* AppCenterCrashes */,
+				109D07AD285FE88C008434CA /* AppCenterDistribute */,
+			);
 			productName = LoopTuner;
 			productReference = 104FDE4B283332D2003E9868 /* LoopTuner.app */;
 			productType = "com.apple.product-type.application";
@@ -266,6 +277,9 @@
 				Base,
 			);
 			mainGroup = 104FDE42283332D2003E9868;
+			packageReferences = (
+				109D07A8285FE88C008434CA /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
+			);
 			productRefGroup = 104FDE4C283332D2003E9868 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -408,7 +422,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -463,7 +477,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -486,13 +500,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LoopTuner/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads insulin and carb values from HealthKit";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop Tuna uses your existing health information to calculate ISF, CR and Basal rates for Loop.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop Tuna uses your existing health information to calculate ISF, CR and Basal rates for Loop.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -519,13 +534,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LoopTuner/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads insulin and carb values from HealthKit";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop Tuna uses your existing health information to calculate ISF, CR and Basal rates for Loop.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop Tuna uses your existing health information to calculate ISF, CR and Basal rates for Loop.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -655,6 +671,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		109D07A8285FE88C008434CA /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/microsoft/appcenter-sdk-apple.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		109D07A9285FE88C008434CA /* AppCenterAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 109D07A8285FE88C008434CA /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
+			productName = AppCenterAnalytics;
+		};
+		109D07AB285FE88C008434CA /* AppCenterCrashes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 109D07A8285FE88C008434CA /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
+			productName = AppCenterCrashes;
+		};
+		109D07AD285FE88C008434CA /* AppCenterDistribute */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 109D07A8285FE88C008434CA /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
+			productName = AppCenterDistribute;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 104FDE43283332D2003E9868 /* Project object */;
 }
